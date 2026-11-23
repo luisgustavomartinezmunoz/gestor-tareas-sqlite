@@ -1,0 +1,9 @@
+# El worker de Drift y el binario de sqlite3 son recursos de terceros que se
+# incluyen tal cual para que la app funcione en el navegador. Se marcan como
+# vendorizados para que no cuenten en las estadísticas de lenguaje.
+web/drift_worker.js linguist-vendored
+web/sqlite3.wasm    linguist-vendored binary
+
+# El código generado por build_runner se versiona para poder reproducir el
+# proyecto con git clone, pero no es código escrito a mano.
+lib/data/app_database.g.dart linguist-generated
