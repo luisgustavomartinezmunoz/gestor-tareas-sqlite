@@ -24,13 +24,16 @@ es una base de datos: no permite consultas, índices ni actualizaciones parciale
 ## 2. Esquema de la tabla
 
 ```sql
-CREATE TABLE tareas (
-  id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  titulo     TEXT    NOT NULL,
-  completada INTEGER NOT NULL DEFAULT 0 CHECK (completada IN (0, 1)),
-  creada_en  INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+CREATE TABLE "tareas" (
+  "id"         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "titulo"     TEXT    NOT NULL,
+  "completada" INTEGER NOT NULL DEFAULT 0 CHECK ("completada" IN (0, 1)),
+  "creada_en"  INTEGER NOT NULL DEFAULT (CAST(strftime('%s', CURRENT_TIMESTAMP) AS INTEGER))
 );
 ```
+
+Este es el DDL exacto que genera Drift, leído con `sqlite3` directamente del
+archivo `gestor_tareas.sqlite` que la app crea en Windows.
 
 SQLite no tiene tipo booleano ni tipo fecha: `completada` se guarda como `0`/`1`
 y `creada_en` como segundos desde epoch. Drift hace la conversión a `bool` y
@@ -89,12 +92,16 @@ desparejadas la app arranca pero falla al abrir la base en el navegador.
 
 ## 5. Dónde se guardan los datos
 
+`driftDatabase()` usa en todas las plataformas nativas el directorio de
+documentos de la aplicación (`getApplicationDocumentsDirectory()`), con el
+nombre `gestor_tareas.sqlite`:
+
 | Plataforma | Ubicación |
 |---|---|
 | Android | `/data/data/<paquete>/app_flutter/gestor_tareas.sqlite` |
-| iOS / macOS | Carpeta de documentos del sandbox de la app |
-| Windows | `%APPDATA%\com.uaa.pm\gestor_tareas_local\gestor_tareas.sqlite` |
-| Linux | `~/.local/share/<app>/gestor_tareas.sqlite` |
+| iOS / macOS | `Documents/` del sandbox de la app |
+| Windows | Carpeta **Documentos** del usuario. Comprobado en una máquina real: `C:\Users\<usuario>\OneDrive\Documentos\gestor_tareas.sqlite`, porque Windows puede redirigir Documentos a OneDrive |
+| Linux | Carpeta de documentos del usuario |
 | Web | OPFS o IndexedDB del navegador, ligado al **origen y perfil** |
 
 En web los datos se pierden si se borran los datos del sitio o si se usa una

@@ -394,15 +394,15 @@ class _TareasPageState extends State<TareasPage> {
     if (kIsWeb) return 'web (sqlite3 WebAssembly, OPFS/IndexedDB)';
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return 'Android (archivo .sqlite en los datos de la app)';
+        return 'Android (archivo .sqlite en los documentos de la app)';
       case TargetPlatform.iOS:
-        return 'iOS (archivo .sqlite en el sandbox)';
+        return 'iOS (archivo .sqlite en Documents del sandbox)';
       case TargetPlatform.windows:
-        return 'Windows (archivo .sqlite en AppData)';
+        return 'Windows (archivo .sqlite en la carpeta Documentos)';
       case TargetPlatform.linux:
-        return 'Linux (archivo .sqlite en ~/.local/share)';
+        return 'Linux (archivo .sqlite en la carpeta de documentos)';
       case TargetPlatform.macOS:
-        return 'macOS (archivo .sqlite en Application Support)';
+        return 'macOS (archivo .sqlite en Documents)';
       case TargetPlatform.fuchsia:
         return 'Fuchsia';
     }
